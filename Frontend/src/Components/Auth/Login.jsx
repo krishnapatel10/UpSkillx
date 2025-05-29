@@ -16,7 +16,7 @@ const Login = () => {
     e.preventDefault();
     setError('');
 
-    console.log({ email, password, rememberMe });
+    // console.log({ email, password, rememberMe });
 
     try {
       const Res = await axios.post('http://localhost:5500/api/users/login', {
@@ -29,6 +29,9 @@ const Login = () => {
         localStorage.setItem('token', Res.data.Token);
         localStorage.setItem("user", JSON.stringify(Res.data.user)); 
         navigate("/");
+      }
+      else{
+        alert(Res.data.message)
       }
 
     } catch (err) {

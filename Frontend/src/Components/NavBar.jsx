@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Search, LogIn, UserCircle, Bell, Menu, LogOut } from 'lucide-react';
+import { Search, LogIn, UserCircle, Bell, Menu, LogOut, Rocket } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 
 export default function NavBar() {
@@ -11,27 +11,6 @@ export default function NavBar() {
 
     const dropdownRef = useRef(null);
     const navigate = useNavigate();
-
-    // useEffect(() => {
-    //     const checkAuth = () => {
-    //         let token = localStorage.getItem('token');
-    //         let user = localStorage.getItem('user');
-
-    //         if (token && user) {
-    //             try {
-    //                 const parsedUserData = JSON.parse(user);
-    //                 setIsLoggedIn(true);
-    //                 setUserData(parsedUserData);
-    //             } catch (error) {
-    //                 console.error("Failed to parse user data:", error);
-    //                 handleLogout();
-    //             }
-    //         }
-    //     };
-    //     checkAuth();
-    //     window.addEventListener('storage', checkAuth);
-    //     return () => window.removeEventListener('storage', checkAuth);
-    // }, []);
 
     useEffect(() => {
         async function GetData() {
@@ -65,18 +44,21 @@ export default function NavBar() {
     };
 
     return (
-        <nav className="bg-white border-b border-gray-100 px-4 sm:px-6 py-4 sticky top-0 z-30 shadow-sm w-full">
+        <nav className="sticky top-0 z-50 w-full px-4 sm:px-6 py-3 backdrop-blur-lg bg-white/60 shadow-sm border-b border-white/20 rounded-b-2xl">
             <div className="flex justify-between items-center">
-                {/* Logo */}
-                <Link to="/" className="text-xl font-bold text-indigo-600">UpSkills</Link>
+                {/* <Link to="/" className="text-xl font-bold text-indigo-600">UpSkills</Link> */}
+                <div className="flex items-center space-x-2">
+                    <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
+                        <Rocket className="w-6 h-6 text-white" />
+                    </div>
+                    <span className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                       <Link to="/">UpSkillx</Link>
+                    </span>
+                </div>
 
-                {/* Right side */}
                 <div className="flex items-center">
-                    
-                    {/* Mobile menu button */}
-                    
+                    {/* --- MOBILE USER ICON & DROPDOWN (md:hidden) --- */}
                     <div className="md:hidden">
-                        
                         <button
                             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                             className="flex items-center space-x-2 cursor-pointer"
@@ -93,12 +75,12 @@ export default function NavBar() {
 
                             <div className="hidden lg:block text-left">
                                 <p className="text-sm font-medium text-gray-700">{userData?.name}</p>
-                                <p className="text-sm text-gray-500">Premium Member</p>
+                                <p className="text-sm text-gray-500 capitalize">{userData?.role || 'Member'}</p>
                             </div>
                         </button>
-                          {/* User Dropdown */}
+
                         {isDropdownOpen && (
-                            <div className="absolute right-1 top-full  w-38 bg-white rounded-md shadow-lg py-1 z-50">
+                            <div className="absolute right-1 top-full w-38 bg-white rounded-md shadow-lg py-1 z-50">
                                 <Link to="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</Link>
                                 <Link to="/my-courses" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">My Courses</Link>
                                 <Link to="/settings" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</Link>
@@ -113,13 +95,12 @@ export default function NavBar() {
                         )}
                     </div>
 
-                    {/* Desktop nav items */}
+                    {/* --- DESKTOP NAV CONTENT (md:flex) --- */}
                     <div className="hidden md:flex items-center space-x-4">
                         {isLoggedIn ? (
                             <>
-                                {/* Bell */}
                                 <div className="relative">
-                                    <button className="p-2 rounded-full hover:bg-gray-100 text-gray-600">
+                                    <button className="p-2 rounded-full hover:bg-gray-200 text-gray-600">
                                         <Bell size={20} />
                                         {notifications > 0 && (
                                             <span className="absolute top-0 right-0 bg-indigo-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
@@ -129,7 +110,6 @@ export default function NavBar() {
                                     </button>
                                 </div>
 
-                                {/* User Dropdown */}
                                 <div className="relative" ref={dropdownRef}>
                                     <button
                                         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -147,11 +127,10 @@ export default function NavBar() {
 
                                         <div className="hidden lg:block text-left">
                                             <p className="text-sm font-medium text-gray-700">{userData?.name}</p>
-                                            <p className="text-sm text-gray-500">Premium Member</p>
+                                            <p className="text-sm text-gray-500 capitalize">{userData?.role || 'Member'}</p>
                                         </div>
                                     </button>
 
-                                    {/* Dropdown */}
                                     {isDropdownOpen && (
                                         <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
                                             <Link to="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</Link>
@@ -189,15 +168,11 @@ export default function NavBar() {
                 </div>
             </div>
 
-
-
-
-            {/* Mobile Dropdown */}
+            {/* --- MOBILE MENU CONTENT (isMenuOpen) --- */}
             {isMenuOpen && (
                 <div className="md:hidden pt-4 pb-3 border-t mt-3">
                     {isLoggedIn ? (
                         <>
-                            {/* Bell */}
                             <div className="relative">
                                 <button className="p-2 rounded-full hover:bg-gray-100 text-gray-600">
                                     <Bell size={20} />
@@ -226,14 +201,12 @@ export default function NavBar() {
 
                                     <div className="hidden lg:block text-left">
                                         <p className="text-sm font-medium text-gray-700">{userData?.name}</p>
-                                        <p className="text-sm text-gray-500">Premium Member</p>
+                                        <p className="text-sm text-gray-500 capitalize">{userData?.role || 'Member'}</p>
                                     </div>
                                 </button>
                                 <div>
                                     <p className="font-medium text-gray-800">{userData.name}</p>
-                                    <p className="text-sm text-gray-500">
-                                        {userData.role === 'user' ? 'Member' : 'Administrator'}
-                                    </p>
+                                    <p className="text-sm text-gray-500 capitalize">{userData.role || 'Member'}</p>
                                 </div>
                             </div>
 

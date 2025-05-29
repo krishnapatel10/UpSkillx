@@ -24,6 +24,7 @@ ConnectDB()
 //Apis
 app.use("/api/users",UserRoute)
 app.use("/api/courses",authMiddleware,CourseRoute)
+// app.use("/api/courses",CourseRoute)
 
 
 
