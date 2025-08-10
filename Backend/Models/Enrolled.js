@@ -1,12 +1,11 @@
 import mongoose from "mongoose";
-import { useId } from "react";
 
 let EnrolledSchema = new mongoose.Schema({
-    useId:{
+    userId:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"User"
     },
-    CourseId:{
+    courseId:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"Course"
     },

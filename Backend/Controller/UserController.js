@@ -86,8 +86,7 @@ let UserController = {
       }
       user.name = req.body.name || user.name;
       user.email = req.body.email || user.email;
-      user.password =
-        (await bcrypt.hash(req.body.password, 10)) || user.password;
+      user.password = (await bcrypt.hash(req.body.password, 10)) || user.password;
       user.profilePicture = req.body.profilePicture || user.profilePicture;
       user.age = req.body.age || user.age;
       user.role = req.body.role || user.role;

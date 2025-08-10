@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import {useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { Star, Clock, CheckCircle, Sparkles, Heart } from 'lucide-react';
 
 export default function Courses() {
@@ -53,57 +53,57 @@ export default function Courses() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
           {courses.map((course, index) => (
-           <div
-  key={index}
-  className="group relative bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-[1.03] flex flex-col"
->
-  {/* Image */}
-  <div className="overflow-hidden">
-    <img
-      src={course.poster}
-      alt={course.name}
-      className="w-full h-52 object-cover transform group-hover:scale-105 transition duration-500"
-    />
-  </div>
+            <div
+              key={index}
+              className="group relative bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-[1.03] flex flex-col"
+            >
+              {/* Image */}
+              <div className="overflow-hidden">
+                <img
+                  src={course.poster}
+                  alt={course.name}
+                  className="w-full h-52 object-cover transform group-hover:scale-105 transition duration-500"
+                />
+              </div>
 
-  {/* Course Details */}
-  <div className="p-6 flex flex-col flex-grow">
-    <h3 className="text-2xl font-bold text-purple-700 mb-2 group-hover:text-pink-600 transition-colors">
-      {course.name}
-    </h3>
-    <p className="text-gray-600 text-sm mb-4 line-clamp-3 flex-grow">
-      {course.description}
-    </p>
+              {/* Course Details */}
+              <div className="p-6 flex flex-col flex-grow">
+                <h3 className="text-2xl font-bold text-purple-700 mb-2 group-hover:text-pink-600 transition-colors">
+                  {course.name}
+                </h3>
+                <p className="text-gray-600 text-sm mb-4 line-clamp-3 flex-grow">
+                  {course.description}
+                </p>
 
-    {/* Course Info */}
-    <div className="flex flex-wrap gap-2 text-sm font-medium mb-4">
-      <span className="inline-flex items-center gap-1 bg-purple-100 text-purple-700 px-3 py-1 rounded-full">
-        <Clock className="w-4 h-4" /> {course.duration} weeks
-      </span>
-      <span className="inline-flex items-center gap-1 bg-green-100 text-green-700 px-3 py-1 rounded-full">
-        <CheckCircle className="w-4 h-4" /> Certificate
-      </span>
-    </div>
+                {/* Course Info */}
+                <div className="flex flex-wrap gap-2 text-sm font-medium mb-4">
+                  <span className="inline-flex items-center gap-1 bg-purple-100 text-purple-700 px-3 py-1 rounded-full">
+                    <Clock className="w-4 h-4" /> {course.duration} weeks
+                  </span> 
+                  <span className="inline-flex items-center gap-1 bg-green-100 text-green-700 px-3 py-1 rounded-full">
+                    <CheckCircle className="w-4 h-4" /> Certificate
+                  </span>
+                </div>
 
-    {/* Price and Enroll */}
-    <div className="mt-auto">
-      <div className="flex justify-between items-center text-gray-700 font-semibold mb-4">
-        <div className="flex items-center gap-1 text-yellow-500">
-          {[...Array(5)].map((_, i) => (
-            <Star key={i} className="w-4 h-4 fill-current" />
-          ))}
-        </div>
-        <span className="text-purple-600 text-lg font-bold">${course.price}</span>
-      </div>
+                {/* Price and Enroll */}
+                <div className="mt-auto">
+                  <div className="flex justify-between items-center text-gray-700 font-semibold mb-4">
+                    <div className="flex items-center gap-1 text-yellow-500">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="w-4 h-4 fill-current" />
+                      ))}
+                    </div>
+                    <span className="text-purple-600 text-lg font-bold">${course.price}</span>
+                  </div>
 
-      <button onClick={()=>{
-        navigate(`/courses/enroll/${course._id}`)
-      }} className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold py-3 rounded-xl shadow-md hover:shadow-xl transition-all duration-300">
-        Enroll Now
-      </button>
-    </div>
-  </div>
-</div>
+                  <button onClick={() => {
+                    navigate(`/courses/enroll/${course._id}`)
+                  }} className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold py-3 rounded-xl shadow-md hover:shadow-xl transition-all duration-300">
+                    Enroll Now
+                  </button>
+                </div>
+              </div>
+            </div>
 
           ))}
         </div>

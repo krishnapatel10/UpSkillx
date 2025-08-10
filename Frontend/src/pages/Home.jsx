@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Sparkles, Rocket, Users, Trophy, BookOpen, ArrowRight, Play, Star, CheckCircle, Target, Zap, Heart } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export default function VibrantHomePage() {
+  let navigate = useNavigate()
   const [scrollY, setScrollY] = useState(0);
   const [activeFeature, setActiveFeature] = useState(0);
 
@@ -166,7 +168,9 @@ export default function VibrantHomePage() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
-            <button className="group bg-gradient-to-r from-purple-500 to-pink-500 text-white px-8 py-4 rounded-full font-bold text-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 flex items-center">
+            <button onClick={() => {
+              navigate("/courses")
+            }} className="group bg-gradient-to-r from-purple-500 to-pink-500 text-white px-8 py-4 rounded-full font-bold text-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 flex items-center">
               Start Learning Now
               <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </button>
@@ -278,11 +282,13 @@ export default function VibrantHomePage() {
                   </div>
 
                   {/* Enroll Button at bottom */}
-                  <button
+                  {/* <button onClick={() => {
+                    navigate(`/courses/enroll/${course._id}`)
+                  }}
                     className={`mt-auto w-full bg-gradient-to-r ${course.color} text-white py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 group-hover:scale-105`}
                   >
                     Enroll Now
-                  </button>
+                  </button> */}
                 </div>
               </div>
             ))}
@@ -347,7 +353,9 @@ export default function VibrantHomePage() {
               placeholder="Enter your email"
               className="flex-1 px-6 py-4 rounded-full text-gray-800 border-0 focus:outline-none focus:ring-4 focus:ring-white/30 font-medium"
             />
-            <button className="bg-white text-purple-600 px-8 py-4 rounded-full font-bold hover:bg-gray-100 transition-all duration-300 hover:scale-105">
+            <button onClick={() => {
+              navigate("/signup")
+            }} className="bg-white text-purple-600 px-8 py-4 rounded-full font-bold hover:bg-gray-100 transition-all duration-300 hover:scale-105">
               Get Started Free
             </button>
           </div>
@@ -387,7 +395,7 @@ export default function VibrantHomePage() {
           </div>
 
           <div className="mt-8 pt-8 border-t border-gray-800 text-sm text-gray-500">
-            © 2024 UpSkillx. Made with ❤️ for learners everywhere.
+            © 2025 UpSkillx. Made with ❤️ for learners everywhere.
           </div>
         </div>
       </footer>
