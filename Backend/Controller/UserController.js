@@ -1,5 +1,5 @@
 import User from "../Models/UserModel.js";
-import bcrypt from "bcrypt";
+import bcrypt from 'bcryptjs' 
 import "dotenv/config";
 import jwt from "jsonwebtoken";
 let UserController = {
