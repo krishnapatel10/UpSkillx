@@ -26,6 +26,8 @@ export default function NavBar() {
         GetData()
     }, []);
 
+    
+
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
