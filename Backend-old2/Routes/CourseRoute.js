@@ -1,4 +1,4 @@
-import { Router } from "express";
+const router = require("./router");
 import adminMiddleware from "../Middleware/adminMiddleware.js";
 import CourseController from "../Controller/CourseController.js";
 
