@@ -1,8 +1,8 @@
-import { Router } from "express";
+const router = require("./router.js");
 import UserController from "../Controller/UserController.js";
 
 
-let router = Router();
+// let router = Router();
 
 router.get("/", UserController.getAllUsers);
 router.get("/:id", UserController.getUserById);

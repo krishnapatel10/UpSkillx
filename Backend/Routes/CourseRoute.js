@@ -1,8 +1,8 @@
-import { Router } from "express";
+const router = require("./router.js");
 import adminMiddleware from "../Middleware/adminMiddleware.js";
 import CourseController from "../Controller/CourseController.js";
 
-let router = Router();
+// let router = Router();
 router.get("/", CourseController.getAllCourses); // If getAllCourses is undefined, this will throw the error
 router.get("/:cid", CourseController.getCoursesById);
 router.post("/",CourseController.CreateCourses);

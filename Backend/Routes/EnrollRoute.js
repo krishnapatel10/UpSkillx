@@ -1,8 +1,8 @@
-import { Router } from "express";
+const router = require("./router.js");
 import EnrollController from "../Controller/EnrollController.js";
 
 
-let router = Router();
+// let router = Router();
 
 router.get("/getEnrolls/:uid",EnrollController.getEnrolls);
 router.post("/addNewEnroll",EnrollController.createEnroll);
