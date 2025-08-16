@@ -10,6 +10,8 @@ app.use(bodyParser.json());
 //Routes
 import ConnectDB from "./Config/dbconfig.js";
 import authMiddleware from "./Middleware/authMiddleware.js";
+
+
 import UserRoute from "./Routes/UserRoute.js";
 import CourseRoute from "./Routes/CourseRoute.js";
 import EnrollRoute from "./Routes/EnrollRoute.js";
