@@ -2,8 +2,14 @@ import jwt from "jsonwebtoken";
 import "dotenv/config";
 
 const authMiddleware = (req, res, next) => {
-  const token = req.header("Authorization");
+  const authHeader = req.header("Authorization");
 
+  if (!authHeader) {
+    return res.status(401).json({ message: "No token, authorization denied" });
+  }
+
+  // Split "Bearer <token>"
+  const token = authHeader.split(" ")[1];
   if (!token) {
     return res.status(401).json({ message: "No token, authorization denied" });
   }
@@ -18,6 +24,7 @@ const authMiddleware = (req, res, next) => {
 };
 
 export default authMiddleware;
+
 
 // ✅ Admin check
 // export const isAdmin = (req, res, next) => {

@@ -52,7 +52,7 @@ const handleSubmit = async (e) => {
 
     console.log(Res.data);
 
-    if (Res.data.Token) {
+    if (Res.data.token) {
       // Token & user save in localStorage
       localStorage.setItem('token', Res.data.Token);
       localStorage.setItem('user', JSON.stringify(Res.data.user));

@@ -28,113 +28,137 @@ let UserController = {
 
   // login
   async loginUser(req, res) {
+    // try {
+    //   let { email, password } = req.body;
+    //   email = email.trim().toLowerCase();
+
+    //   let user = await User.findOne({ email });
+
+    //   if (!user) {
+    //     return res.status(401).json({ message: "Invalid email or password" });
+    //   }
+
+    //   const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    //   if (!isPasswordValid) {
+    //     return res.status(401).json({ message: "Invalid password" });
+    //   }
+
+    //   // let Token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+    //   // expiresIn: "30d",
+    //   // });
+
+    //   // 👇 Yaha bhi role include karo
+    //   const Token = jwt.sign(
+    //     { id: user.id, email: user.email, role: user.role },
+    //     process.env.JWT_SECRET,
+    //     { expiresIn: "30d" }
+    //   );
+
+    //   res.status(200).json({ Token, user });
+    // } catch (error) {
+    //   console.error("Login error:", error.message);
+    //   res.status(500).json({ message: "internal server error", error });
+    // }
     try {
-      let { email, password } = req.body;
-      email = email.trim().toLowerCase();
+    const { email, password } = req.body;
 
-      let user = await User.findOne({ email });
-
-      if (!user) {
-        return res.status(401).json({ message: "Invalid email or password" });
-      }
-
-      const isPasswordValid = await bcrypt.compare(password, user.password);
-
-      if (!isPasswordValid) {
-        return res.status(401).json({ message: "Invalid password" });
-      }
-
-      // let Token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-      // expiresIn: "30d",
-      // });
-
-      // 👇 Yaha bhi role include karo
-      const Token = jwt.sign(
-        { id: user.id, email: user.email, role: user.role },
-        process.env.JWT_SECRET,
-        { expiresIn: "30d" }
-      );
-
-      res.status(200).json({ Token, user });
-    } catch (error) {
-      console.error("Login error:", error.message);
-      res.status(500).json({ message: "internal server error", error });
+    // Find user
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ message: "Invalid email or password" });
     }
+
+    // Check password
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Invalid email or password" });
+    }
+
+    // Create token with role
+    const token = jwt.sign(
+      { id: user._id, email: user.email, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "30d" }
+    );
+
+    res.json({ user, token });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
   },
 
   //signup
   async createUser(req, res) {
-  //   try {
-  //     // Admin auto-detect based on email
-  //     let role = "user";
-  //     if (req.body.email.trim().toLowerCase() === "admin@gmail.com") {
-  //       role = "admin";
-  //     }
+    // try {
+    //   // Admin auto-detect based on email
+    //   let role = "user";
+    //   if (req.body.email.trim().toLowerCase() === "admin@gmail.com") {
+    //     role = "admin";
+    //   }
 
-  //     let user = new User({
-  //       name: req.body.name,
-  //       email: req.body.email,
-  //       password: await bcrypt.hash(req.body.password, 10),
-  //       profilePicture: req.body.profilePicture,
-  //       age: req.body.age,
-  //       role: role, // 👈 auto role assign
-  //     });
-  //     let savedUser = await user.save();
+    //   let user = new User({
+    //     name: req.body.name,
+    //     email: req.body.email,
+    //     password: await bcrypt.hash(req.body.password, 10),
+    //     profilePicture: req.body.profilePicture,
+    //     age: req.body.age,
+    //     role: role, // 👈 auto role assign
+    //   });
+    //   let savedUser = await user.save();
 
-  //     // let TokenData = jwt.sign({ id: savedUser.id }, process.env.JWT_SECRET, {
-  //     //   expiresIn: "30d",
-  //     // });
+    //   // let TokenData = jwt.sign({ id: savedUser.id }, process.env.JWT_SECRET, {
+    //   //   expiresIn: "30d",
+    //   // });
 
-  //     // 👇 token me role + email bhi bhej
-  //     let TokenData = jwt.sign(
-  //       { id: savedUser.id, email: savedUser.email, role: savedUser.role },
-  //       process.env.JWT_SECRET,
-  //       { expiresIn: "30d" }
-  //     );
+    //   // 👇 token me role + email bhi bhej
+    //   let TokenData = jwt.sign(
+    //     { id: savedUser.id, email: savedUser.email, role: savedUser.role },
+    //     process.env.JWT_SECRET,
+    //     { expiresIn: "30d" }
+    //   );
 
-  //     res.status(201).json({ user: savedUser, Token: TokenData });
-  //   } catch (error) {
-  //     res.status(500).json({ message: "internal server error", error });
-  //   }
-  // },
-   try {
+    //   res.status(201).json({ user: savedUser, Token: TokenData });
+    // } catch (error) {
+    //   res.status(500).json({ message: "internal server error", error });
+    // }
+     try {
     const { name, email, password, age, profilePicture } = req.body;
 
-    // 🔹 Pehle check karo user already hai ya nahi
-    let existing = await User.findOne({ email });
-    if (existing) {
+    // Check if user already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    // 🔹 Role assign karo
- const normalizedEmail = email.trim().toLowerCase();
-let role = "user";
-if (normalizedEmail === "admin@gmail.com") {
-  role = "admin";
-}
+    // Hash password
+    // const hashedPassword = await bcrypt.hash(password, 10);
 
-    // 🔹 Hash password
-    const hashedPassword = await bcrypt.hash(password, 10);
+    // Role logic: agar email admin hai to role = "admin"
+    let role = "user";
+    if (email === "admin@gmail.com") {
+      role = "admin";
+    }
 
-    // 🔹 Naya user banao
-    const user = new User({
+    // Create new user
+    const newUser = new User({
       name,
       email,
-      password: hashedPassword,
-      profilePicture,
+      password: await bcrypt.hash(req.body.password, 10),
       age,
+      profilePicture,
       role,
     });
 
-    await user.save();
+    await newUser.save();
 
-    res.status(201).json({
-      message: "Signup successful",
-      user,
-    });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }},
+    res.status(201).json({ message: "User created successfully", user: newUser });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+  },
 
   // UpdateUser
   async UpdateUser(req, res) {
