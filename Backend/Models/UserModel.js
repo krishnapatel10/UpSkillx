@@ -8,6 +8,8 @@ let UserSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
+    lowercase: true,
+    unique: true, 
   },
   password: {
     type: String,
@@ -15,7 +17,8 @@ let UserSchema = new mongoose.Schema({
   },
   profilePicture: {
     type: String,
-    default:"https://png.pngtree.com/png-clipart/20240923/original/pngtree-handsome-man-with-a-beautiful-smile-and-glasses-png-image_16072042.png",
+    default:
+      "https://png.pngtree.com/png-clipart/20240923/original/pngtree-handsome-man-with-a-beautiful-smile-and-glasses-png-image_16072042.png",
   },
   age: {
     type: Number,

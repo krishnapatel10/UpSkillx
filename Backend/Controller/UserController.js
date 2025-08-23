@@ -1,5 +1,5 @@
 import User from "../Models/UserModel.js";
-import bcrypt from 'bcryptjs' 
+import bcrypt from "bcryptjs";
 import "dotenv/config";
 import jwt from "jsonwebtoken";
 let UserController = {
@@ -30,6 +30,7 @@ let UserController = {
   async loginUser(req, res) {
     try {
       let { email, password } = req.body;
+      email = email.trim().toLowerCase();
 
       let user = await User.findOne({ email });
 
@@ -43,9 +44,16 @@ let UserController = {
         return res.status(401).json({ message: "Invalid password" });
       }
 
-      let Token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-        expiresIn: "30d",
-      });
+      // let Token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+      // expiresIn: "30d",
+      // });
+
+      // 👇 Yaha bhi role include karo
+      const Token = jwt.sign(
+        { id: user.id, email: user.email, role: user.role },
+        process.env.JWT_SECRET,
+        { expiresIn: "30d" }
+      );
 
       res.status(200).json({ Token, user });
     } catch (error) {
@@ -56,26 +64,77 @@ let UserController = {
 
   //signup
   async createUser(req, res) {
-    try {
-      let user = new User({
-        name: req.body.name,
-        email: req.body.email,
-        password: await bcrypt.hash(req.body.password, 10),
-        profilePicture: req.body.profilePicture,
-        age: req.body.age,
-        role: req.body.role,
-      });
-      let savedUser = await user.save();
+  //   try {
+  //     // Admin auto-detect based on email
+  //     let role = "user";
+  //     if (req.body.email.trim().toLowerCase() === "admin@gmail.com") {
+  //       role = "admin";
+  //     }
 
-      let TokenData = jwt.sign({ id: savedUser.id }, process.env.JWT_SECRET, {
-        expiresIn: "30d",
-      });
+  //     let user = new User({
+  //       name: req.body.name,
+  //       email: req.body.email,
+  //       password: await bcrypt.hash(req.body.password, 10),
+  //       profilePicture: req.body.profilePicture,
+  //       age: req.body.age,
+  //       role: role, // 👈 auto role assign
+  //     });
+  //     let savedUser = await user.save();
 
-      res.status(201).json({ user: savedUser, Token: TokenData });
-    } catch (error) {
-      res.status(500).json({ message: "internal server error", error });
+  //     // let TokenData = jwt.sign({ id: savedUser.id }, process.env.JWT_SECRET, {
+  //     //   expiresIn: "30d",
+  //     // });
+
+  //     // 👇 token me role + email bhi bhej
+  //     let TokenData = jwt.sign(
+  //       { id: savedUser.id, email: savedUser.email, role: savedUser.role },
+  //       process.env.JWT_SECRET,
+  //       { expiresIn: "30d" }
+  //     );
+
+  //     res.status(201).json({ user: savedUser, Token: TokenData });
+  //   } catch (error) {
+  //     res.status(500).json({ message: "internal server error", error });
+  //   }
+  // },
+   try {
+    const { name, email, password, age, profilePicture } = req.body;
+
+    // 🔹 Pehle check karo user already hai ya nahi
+    let existing = await User.findOne({ email });
+    if (existing) {
+      return res.status(400).json({ message: "User already exists" });
     }
-  },
+
+    // 🔹 Role assign karo
+ const normalizedEmail = email.trim().toLowerCase();
+let role = "user";
+if (normalizedEmail === "admin@gmail.com") {
+  role = "admin";
+}
+
+    // 🔹 Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // 🔹 Naya user banao
+    const user = new User({
+      name,
+      email,
+      password: hashedPassword,
+      profilePicture,
+      age,
+      role,
+    });
+
+    await user.save();
+
+    res.status(201).json({
+      message: "Signup successful",
+      user,
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }},
 
   // UpdateUser
   async UpdateUser(req, res) {
@@ -86,7 +145,8 @@ let UserController = {
       }
       user.name = req.body.name || user.name;
       user.email = req.body.email || user.email;
-      user.password = (await bcrypt.hash(req.body.password, 10)) || user.password;
+      user.password =
+        (await bcrypt.hash(req.body.password, 10)) || user.password;
       user.profilePicture = req.body.profilePicture || user.profilePicture;
       user.age = req.body.age || user.age;
       user.role = req.body.role || user.role;
