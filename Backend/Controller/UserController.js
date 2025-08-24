@@ -198,3 +198,4 @@ let UserController = {
   },
 };
 export default UserController;
+
