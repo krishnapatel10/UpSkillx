@@ -1,35 +1,23 @@
+import express from "express";
 import jwt from "jsonwebtoken";
 import "dotenv/config";
 
-const authMiddleware = (req, res, next) => {
-  const authHeader = req.header("Authorization");
+const authMiddleware = express.Router();
 
-  if (!authHeader) {
-    return res.status(401).json({ message: "No token, authorization denied" });
-  }
+authMiddleware.use((req, res, next) => {
+  const token = req.header("Authorization");
 
-  // Split "Bearer <token>"
-  const token = authHeader.split(" ")[1];
   if (!token) {
     return res.status(401).json({ message: "No token, authorization denied" });
   }
 
-  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
     if (err) {
       return res.status(403).json({ message: "Token is not valid" });
     }
-    req.user = decoded; // JWT payload { id, email, role }
+    req.user = user;
     next();
   });
-};
+});
 
 export default authMiddleware;
-
-
-// ✅ Admin check
-// export const isAdmin = (req, res, next) => {
-//   if (req.user.role !== "admin") {
-//     return res.status(403).json({ message: "Access denied. Admin only!" });
-//   }
-//   next();
-// };

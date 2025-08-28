@@ -12,67 +12,35 @@ const Login = () => {
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState('');
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   setError('');
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
 
-  //   // console.log({ email, password, rememberMe });
+    // console.log({ email, password, rememberMe });
 
-  //   try {
-  //     const Res = await axios.post('http://localhost:5500/api/users/login', {
-  //       email,
-  //       password,
-  //     });
-  //     console.log(Res.data)
+    try {
+      const Res = await axios.post('http://localhost:5500/api/users/login', {
+        email,
+        password,
+      });
+      console.log(Res.data)
 
-  //     if (Res.data.Token) {
-  //       localStorage.setItem('token', Res.data.Token);
-  //       localStorage.setItem("user", JSON.stringify(Res.data.user)); 
-  //       localStorage.setItem("role", Res.data.user.role);
-  //       navigate("/");
-  //     }
-  //     else{
-  //       alert(Res.data.message)
-  //     }
+      if (Res.data.Token) {
+        localStorage.setItem('token', Res.data.Token);
+        localStorage.setItem("user", JSON.stringify(Res.data.user)); 
+        localStorage.setItem("role", Res.data.user.role);
+        navigate("/");
+      }
+      else{
+        alert(Res.data.message)
+      }
 
-  //   } catch (err) {
-  //     setError(err.response?.data?.message || 'An error occurred. Please try again.');
-  //   }
-  // };
-
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  setError('');
-
-  try {
-    const Res = await axios.post('http://localhost:5500/api/users/login', {
-      email,
-      password,
-    });
-
-    console.log(Res.data);
-
-    if (Res.data.token) {
-      // Token & user save in localStorage
-      localStorage.setItem('token', Res.data.Token);
-      localStorage.setItem('user', JSON.stringify(Res.data.user));
-      localStorage.setItem('role', Res.data.user.role);
-
-      // ✅ Role based redirect
-      // if (Res.data.user.role === "admin") {
-      //   // Admin ko admin app pe bhej do
-      //   window.location.href = "http://localhost:5173/";
-      // } else {
-      //   // Normal user ko user app pe bhej do
-      //   window.location.href = "http://localhost:5174/";
-      // }
-    } else {
-      alert(Res.data.message);
+    } catch (err) {
+      setError(err.response?.data?.message || 'An error occurred. Please try again.');
     }
-  } catch (err) {
-    setError(err.response?.data?.message || 'An error occurred. Please try again.');
-  }
-};
+  };
+
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">

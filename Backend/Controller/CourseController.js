@@ -1,14 +1,6 @@
 import Course from "../Models/CoursesModel.js";
 
 let CourseController = {
-  async getAllCoursesAdmin(req, res){
-    try {
-      let courses = await Course.find();
-      res.json(courses);
-    } catch (error) {
-      res.status(500).json({ message: error.message });
-    }
-  },
   async getAllCourses(req, res) {
     try {
       let Data = await Course.find();

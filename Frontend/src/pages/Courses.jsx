@@ -17,7 +17,7 @@ export default function Courses() {
           headers: { Authorization: token }
         });
         setCourses(res.data);
-        // console.log(res.data);
+        console.log(res.data);
       } catch (err) {
         console.error("Failed to fetch courses:", err.message);
       }
