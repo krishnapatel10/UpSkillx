@@ -20,6 +20,10 @@ import EnrollRoute from "./Routes/EnrollRoute.js";
 ConnectDB();
 
 //Apis
+// Test route
+app.get("/", (req, res) => res.send("API is working"));
+
+// Mount routes
 app.use("/api/users", UserRoute);
 app.use("/api/courses", authMiddleware, CourseRoute);
 app.use("/api/enroll", EnrollRoute);

@@ -1,28 +1,85 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Users, BookOpen, TrendingUp, Activity, PlusCircle } from "lucide-react";
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function Home() {
-    
-  let navigate = useNavigate()
+  const [courses, setCourses] = useState([]);
+  let [user, setUserData] = useState([])
+  const [enroll, setEnroll] = useState([]);
+  const [enrollCount, setEnrollCount] = useState(0);
+  const [courseCount, setCourseCount] = useState(0);
+  let [usercount, setusercount] = useState(0)
+
+
+
+  useEffect(() => {
+    async function GetEnroll() {
+      try {
+        let res = await axios.get("http://localhost:5500/api/enroll/getAllEnroll");
+        setEnroll(res.data);
+        setEnrollCount(res.data.length);
+      } catch (err) {
+        console.error("Failed to fetch enrollments:", err.message);
+      }
+    }
+    GetEnroll();
+  }, []);
+
+
+  useEffect(() => {
+    async function getData() {
+      let res = await axios.get("http://localhost:5500/api/users")
+      setUserData(res.data);
+      // console.log(res.data);
+      setusercount(res.data.length)
+
+    }
+    getData();
+  }, [])
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    async function fetchCourses() {
+      try {
+        const res = await axios.get("http://localhost:5500/api/courses", {
+          headers: { Authorization: token },
+        });
+        setCourses(res.data);
+        setCourseCount(res.data.length); // yaha count set hoga
+      } catch (err) {
+        console.error("Failed to fetch courses:", err.message);
+      }
+    }
+
+    fetchCourses();
+  }, []);
+
+  let navigate = useNavigate();
+
   const stats = [
     {
       name: "Total Users",
-      value: "1,245",
+      value: usercount,
       icon: <Users className="w-10 h-10 text-blue-600" />,
       desc: "Registered learners on the platform",
+      onClick: () => navigate("/user")  // <-- yaha fix
     },
     {
       name: "Total Courses",
-      value: "36",
+      value: courseCount, // yaha dynamic count dikh jaayega
       icon: <BookOpen className="w-10 h-10 text-green-600" />,
       desc: "Available courses for students",
+      onClick: () => navigate("/courses"),
     },
     {
       name: "Active Enrollments",
-      value: "532",
+      value: enrollCount,
       icon: <Activity className="w-10 h-10 text-purple-600" />,
       desc: "Students currently enrolled",
+      onClick: () => navigate("/enroll"),
     },
     {
       name: "Monthly Growth",
@@ -70,10 +127,11 @@ export default function Home() {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-          {stats.map((stat) => (
+          {stats.map((stat, index) => (
             <div
-              key={stat.name}
-              className="bg-white p-6 rounded-xl shadow hover:shadow-lg transition-transform hover:scale-105"
+              key={index}
+              onClick={stat.onClick}
+              className="bg-white p-6 rounded-xl shadow hover:shadow-lg transition-transform hover:scale-105 cursor-pointer"
             >
               <div className="flex items-center gap-4">
                 {stat.icon}
@@ -88,7 +146,8 @@ export default function Home() {
         </div>
 
         {/* Recent Users & Courses */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div
+          className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Recent Users */}
           <div className="bg-white p-6 rounded-xl shadow">
             <h3 className="text-lg font-semibold text-gray-700 mb-4">
@@ -102,9 +161,9 @@ export default function Home() {
                 </tr>
               </thead>
               <tbody>
-                {(showAllUsers ? recentUsers : recentUsers.slice(0, 3)).map(
-                  (user) => (
-                    <tr key={user.id} className="border-b hover:bg-gray-50">
+                {(showAllUsers ? user : user.slice(0, 3)).map(
+                  (user, index) => (
+                    <tr key={user._id || index} className="border-b hover:bg-gray-50">
                       <td className="py-2">{user.name}</td>
                       <td className="py-2">{user.email}</td>
                     </tr>

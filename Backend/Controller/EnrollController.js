@@ -1,6 +1,17 @@
 import Enrolled from "../Models/Enrolled.js";
 
 const EnrolledController = {
+  // Get all enrollments
+async getAllEnroll(req, res) {
+    try {
+      const enrolls = await Enrolled.find()
+        .populate("courseId")
+        .populate("userId");
+      res.json(enrolls);
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  },
   async getEnrolls(req, res) {
     try {
       let { uid } = req.params;
