@@ -17,7 +17,7 @@ export default function Home() {
     async function GetEnroll() {
       try {
         let res = await axios.get("http://localhost:5500/api/enroll/getAllEnroll");
-        setEnroll(res.data);
+          setEnroll(res.data);
         setEnrollCount(res.data.length);
       } catch (err) {
         console.error("Failed to fetch enrollments:", err.message);

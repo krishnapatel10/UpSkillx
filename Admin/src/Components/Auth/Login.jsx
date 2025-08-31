@@ -19,7 +19,7 @@ const Login = () => {
     // console.log({ email, password, rememberMe });
 
     try {
-      const Res = await axios.post('http://localhost:5500/api/users/login', {
+      const Res = await axios.post('http://localhost:5500/api/users/admin/login', {
         email,
         password,
       });
@@ -66,7 +66,7 @@ const Login = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="name@example.com"
+                  placeholder="name@gmail.com"
                 />
               </div>
             </div>

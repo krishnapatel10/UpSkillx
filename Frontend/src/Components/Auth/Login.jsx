@@ -27,9 +27,10 @@ const Login = () => {
       console.log(Res.data)
 
       if (Res.data.Token) {
-        localStorage.setItem('token', Res.data.Token);
+        localStorage.setItem('token', Res.data.token);
         localStorage.setItem("user", JSON.stringify(Res.data.user)); 
         localStorage.setItem("role", Res.data.user.role);
+        
         navigate("/");
       }
       else{

@@ -7,7 +7,8 @@ let router = Router();
 router.get("/", UserController.getAllUsers);
 router.get("/:id", UserController.getUserById);
 
-router.post("/login", UserController.loginUser);
+router.post("/login", UserController.loginUser);      // normal user login
+router.post("/admin/login", UserController.loginAdmin); // admin login
 router.post("/signup", UserController.createUser);
 
 router.put("/:id", UserController.UpdateUser);

@@ -26,59 +26,174 @@ let UserController = {
     }
   },
 
-  // login
-  async loginUser(req, res) {
-    try {
-      let { email, password } = req.body;
-      email = email.trim().toLowerCase();
+  // // login
+  // async loginUser(req, res) {
+  //   try {
+  //     let { email, password } = req.body;
+  //     email = email.trim().toLowerCase();
 
-      let user = await User.findOne({ email });
+  //     let user = await User.findOne({ email });
 
-      if (!user) {
-        return res.status(401).json({ message: "Invalid email or password" });
-      }
+  //     if (!user) {
+  //       return res.status(401).json({ message: "Invalid email or password" });
+  //     }
 
-      const isPasswordValid = await bcrypt.compare(password, user.password);
+  //     const isPasswordValid = await bcrypt.compare(password, user.password);
 
-      if (!isPasswordValid) {
-        return res.status(401).json({ message: "Invalid password" });
-      }
+  //     if (!isPasswordValid) {
+  //       return res.status(401).json({ message: "Invalid password" });
+  //     }
 
-      let Token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-        expiresIn: "30d",
-      });
+  //     let Token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+  //       expiresIn: "30d",
+  //     });
 
-      res.status(200).json({ Token, user });
-    } catch (error) {
-      console.error("Login error:", error.message);
-      res.status(500).json({ message: "internal server error", error });
+  //     res.status(200).json({ Token, user });
+  //   } catch (error) {
+  //     console.error("Login error:", error.message);
+  //     res.status(500).json({ message: "internal server error", error });
+  //   }
+  // },
+
+  // 🔹 Normal User Login
+async loginUser(req, res) {
+  try {
+    let { email, password } = req.body;
+    email = email.trim().toLowerCase();
+
+    let user = await User.findOne({ email });
+    if (!user) {
+      return res.status(401).json({ message: "Invalid email or password" });
     }
-  },
 
-  //signup
-  async createUser(req, res) {
-    try {
-      // Admin auto-detect based on email
-
-      let user = new User({
-        name: req.body.name,
-        email: req.body.email,
-        password: await bcrypt.hash(req.body.password, 10),
-        profilePicture: req.body.profilePicture,
-        age: req.body.age,
-        role: req.body.role,
-      });
-      let savedUser = await user.save();
-
-      let TokenData = jwt.sign({ id: savedUser.id }, process.env.JWT_SECRET, {
-        expiresIn: "30d",
-      });
-
-      res.status(201).json({ user: savedUser, Token: TokenData });
-    } catch (error) {
-      res.status(500).json({ message: "internal server error", error });
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return res.status(401).json({ message: "Invalid password" });
     }
-  },
+
+    let Token = jwt.sign(
+      { id: user.id, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "30d" }
+    );
+
+    res.status(200).json({ Token, user });
+  } catch (error) {
+    console.error("Login error:", error.message);
+    res.status(500).json({ message: "internal server error", error });
+  }
+},
+
+// 🔹 Admin Login (sirf ek specific email allowed)  
+// login (Only Admin Email Allowed)
+async loginAdmin(req, res) {
+  try {
+    let { email, password } = req.body;
+    email = email.trim().toLowerCase();
+
+    const ADMIN_EMAIL = "admin@example.com"; // yaha apna admin email likho
+
+    // ✅ Sirf admin email allow karo
+    if (email !== ADMIN_EMAIL) {
+      return res.status(403).json({ message: "Only admin can login" });
+    }
+
+    let user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(401).json({ message: "Invalid email or password" });
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return res.status(401).json({ message: "Invalid password" });
+    }
+
+    // ✅ Role admin force karo
+    if (user.role !== "admin") {
+      user.role = "admin";
+      await user.save();
+    }
+
+    let Token = jwt.sign(
+      { id: user.id, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "30d" }
+    );
+
+    res.status(200).json({ Token, user });
+  } catch (error) {
+    console.error("Login error:", error.message);
+    res.status(500).json({ message: "internal server error", error });
+  }
+},
+  // //signup
+  // async createUser(req, res) {
+  //   try {
+  //     // Admin auto-detect based on email
+  //     const ADMIN_EMAIL = "admin@example.com"; // apna admin email yaha dalna
+
+  //   let role = req.body.role || "user"; // default user
+
+  //   // agar email admin ke equal hai to role = admin force kar do
+  //   if (req.body.email.trim().toLowerCase() === ADMIN_EMAIL) {
+  //     role = "admin";
+  //   }
+
+  //     let user = new User({
+  //       name: req.body.name,
+  //       email: req.body.email,
+  //       password: await bcrypt.hash(req.body.password, 10),
+  //       profilePicture: req.body.profilePicture,
+  //       age: req.body.age,
+  //       role: role,
+  //     });
+  //     let savedUser = await user.save();
+
+  //     let TokenData = jwt.sign({ id: savedUser.id }, process.env.JWT_SECRET, {
+  //       expiresIn: "30d",
+  //     });
+
+  //     res.status(201).json({ user: savedUser, Token: TokenData });
+  //   } catch (error) {
+  //     res.status(500).json({ message: "internal server error", error });
+  //   }
+  // },
+  // signup
+async createUser(req, res) {
+  try {
+    const ADMIN_EMAIL = "admin@example.com"; // apna admin email yaha dalna
+
+    // default role = user
+    let role = "user";
+
+    // agar email admin ke equal hai to role = admin force kar do
+    if (req.body.email.trim().toLowerCase() === ADMIN_EMAIL) {
+      role = "admin";
+    }
+
+    let user = new User({
+      name: req.body.name,
+      email: req.body.email.trim().toLowerCase(),
+      password: await bcrypt.hash(req.body.password, 10),
+      profilePicture: req.body.profilePicture,
+      age: req.body.age,
+      role: role, // yaha role set ho raha hai
+    });
+
+    let savedUser = await user.save();
+
+    let TokenData = jwt.sign(
+      { id: savedUser.id, role: savedUser.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "30d" }
+    );
+
+    res.status(201).json({ user: savedUser, Token: TokenData });
+  } catch (error) {
+    res.status(500).json({ message: "internal server error", error });
+  }
+},
 
   // UpdateUser
   async UpdateUser(req, res) {

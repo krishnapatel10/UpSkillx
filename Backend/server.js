@@ -7,6 +7,7 @@ let app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
+
 //Routes
 import ConnectDB from "./Config/dbconfig.js";
 import authMiddleware from "./Middleware/authMiddleware.js";

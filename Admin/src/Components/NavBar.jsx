@@ -83,6 +83,18 @@ export default function NavBar() {
           </li>
           <li>
             <Link
+              to="/enroll"
+              className={`px-3 py-2 rounded-md text-sm font-medium transition ${
+                location.pathname === "/enroll"
+                  ? "bg-black text-white"
+                  : "text-gray-700 hover:bg-indigo-100"
+              }`}
+            >
+              Enrolls
+            </Link>
+          </li>
+          <li>
+            <Link
               to="/user"
               className={`px-3 py-2 rounded-md text-sm font-medium transition ${
                 location.pathname === "/user"

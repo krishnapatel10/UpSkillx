@@ -2,11 +2,11 @@ import Enrolled from "../Models/Enrolled.js";
 
 const EnrolledController = {
   // Get all enrollments
-async getAllEnroll(req, res) {
+  async getAllEnroll(req, res) {
     try {
       const enrolls = await Enrolled.find()
-        .populate("courseId")
-        .populate("userId");
+        .populate("userId", "name email") // ✅ user ka name & email laane ke liye
+        .populate("courseId", "name duration price");
       res.json(enrolls);
     } catch (err) {
       res.status(500).json({ message: err.message });
