@@ -1,6 +1,16 @@
 import Course from "../Models/CoursesModel.js";
 
 let CourseController = {
+async getAdminCourses (req, res)  {
+  try {
+    const courses = await Course.find();
+    res.json(courses);
+  } catch (error) {
+    console.error("Error fetching admin courses:", error.message);
+    res.status(500).json({ message: "Server error" });
+  }
+},
+
   async getAllCourses(req, res) {
     try {
       let Data = await Course.find();

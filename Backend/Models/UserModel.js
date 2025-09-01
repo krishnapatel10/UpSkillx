@@ -26,8 +26,8 @@ let UserSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ["admin", "user"], // enum full form --- "enumerate"
-    default: "user",
+    enum: ["Admin", "User"], // enum full form --- "enumerate"
+    default: "User",
     required: true,
   },
   createdAt: {

@@ -3,6 +3,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
 import { FaGoogle, FaGithub } from 'react-icons/fa';
 import axios from 'axios';
+import Alert from "@mui/material/Alert";
+import Stack from "@mui/material/Stack";
+import Slide from "@mui/material/Slide";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -11,81 +14,56 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState('');
- 
+  const [success, setSuccess] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-
-    // console.log({ email, password, rememberMe });
+    setSuccess('');
 
     try {
       const Res = await axios.post('http://localhost:5500/api/users/login', {
         email,
         password,
       });
-      console.log(Res.data)
+      console.log(Res.data);
 
       if (Res.data.Token) {
-        localStorage.setItem('token', Res.data.token);
-        localStorage.setItem("user", JSON.stringify(Res.data.user)); 
+        localStorage.setItem('token', Res.data.Token);
+        localStorage.setItem("user", JSON.stringify(Res.data.user));
         localStorage.setItem("role", Res.data.user.role);
-        
-        navigate("/");
-      }
-      else{
-        alert(Res.data.message)
-      }
 
+        setSuccess("Login successful 🎉");
+        setTimeout(() => navigate("/"), 1500);
+      }
+      else {
+        setError(Res.data.message || "Login failed");
+      }
     } catch (err) {
       setError(err.response?.data?.message || 'An error occurred. Please try again.');
     }
   };
 
-// const handleSubmit = async (e) => {
-//   e.preventDefault();
-//   setError('');
-
-//   try {
-//     const Res = await axios.post('http://localhost:5500/api/users/login', {
-//       email,
-//       password,
-//     });
-
-//     console.log(Res.data);
-
-//     if (Res.data.token) {
-//       // Token & user save in localStorage
-//       localStorage.setItem('token', Res.data.Token);
-//       localStorage.setItem('user', JSON.stringify(Res.data.user));
-//       localStorage.setItem('role', Res.data.user.role);
-
-//       // ✅ Role based redirect
-//       // if (Res.data.user.role === "admin") {
-//       //   // Admin ko admin app pe bhej do
-//       //   window.location.href = "http://localhost:5173/";
-//       // } else {
-//       //   // Normal user ko user app pe bhej do
-//       //   window.location.href = "http://localhost:5174/";
-//       // }
-//     } else {
-//       alert(Res.data.message);
-//     }
-//   } catch (err) {
-//     setError(err.response?.data?.message || 'An error occurred. Please try again.');
-//   }
-// };
-
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-      <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-lg">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 px-4 relative">
+      
+      {/* ✅ Alert ko top me lagaya hai + Slide animation */}
+      <div className="absolute top-4 w-full max-w-md">
+        <Stack sx={{ width: '100%' }} spacing={2}>
+          <Slide direction="down" in={!!success} mountOnEnter unmountOnExit>
+            <Alert severity="success">{success}</Alert>
+          </Slide>
+          <Slide direction="down" in={!!error} mountOnEnter unmountOnExit>
+            <Alert severity="error">{error}</Alert>
+          </Slide>
+        </Stack>
+      </div>
+
+      {/* Login Form */}
+      <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-lg mt-16">
         <div className="text-center">
           <h2 className="text-3xl font-bold text-gray-900">Log in to your account</h2>
         </div>
-
-        {error && (
-          <div className="text-sm text-red-600 text-center">{error}</div>
-        )}
 
         <form className="space-y-6" onSubmit={handleSubmit}>
           <div className="space-y-4">

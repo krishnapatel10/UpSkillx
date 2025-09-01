@@ -17,6 +17,7 @@ import Login from "./Components/Auth/Login.jsx"
 import Signup from "./Components/Auth/Signup.jsx"
 import Settings from './Components/Settings.jsx'
 import NotFound from "./pages/NotFound.jsx"
+import DoubtPage from './pages/doubt.jsx'
 
 
 export default function App() {
@@ -64,6 +65,18 @@ export default function App() {
                                 <SideBar />
                                 <main className="flex-1 overflow-y-auto p-4">
                                     <Courses />
+                                </main>
+                            </div>
+                        </div>
+                    } />
+
+                    <Route path="/doubt" element={
+                        <div className="flex flex-col h-full">
+                            <NavBar />
+                            <div className="flex flex-1 overflow-hidden">
+                                <SideBar />
+                                <main className="flex-1 overflow-y-auto p-4">
+                                    <DoubtPage />
                                 </main>
                             </div>
                         </div>

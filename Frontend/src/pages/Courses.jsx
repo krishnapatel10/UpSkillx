@@ -13,8 +13,11 @@ export default function Courses() {
 
     async function fetchCourses() {
       try {
+        // const token = localStorage.getItem("token");
         const res = await axios.get("http://localhost:5500/api/courses", {
-          headers: { Authorization: token }
+          headers: {
+            "Authorization": token,
+          },
         });
         setCourses(res.data);
         console.log(res.data);
@@ -80,7 +83,7 @@ export default function Courses() {
                 <div className="flex flex-wrap gap-2 text-sm font-medium mb-4">
                   <span className="inline-flex items-center gap-1 bg-purple-100 text-purple-700 px-3 py-1 rounded-full">
                     <Clock className="w-4 h-4" /> {course.duration} weeks
-                  </span> 
+                  </span>
                   <span className="inline-flex items-center gap-1 bg-green-100 text-green-700 px-3 py-1 rounded-full">
                     <CheckCircle className="w-4 h-4" /> Certificate
                   </span>

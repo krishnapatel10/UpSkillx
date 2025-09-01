@@ -1,11 +1,12 @@
 import { Router } from "express";
 import authMiddleware from "../Middleware/authMiddleware.js";
-import adminMiddleware from "../Middleware/adminMiddleware.js"
+import adminMiddleware from "../Middleware/adminMiddleware.js";
 import CourseController from "../Controller/CourseController.js";
 
 let router = Router();
 
 // ✅ User (auth required)
+// ✅ Ye sab pehle hi auth se protected hai (kyunki server.js me laga hai)
 router.get("/", CourseController.getAllCourses); // If getAllCourses is undefined, this will throw the error
 router.get("/:cid", CourseController.getCoursesById);
 
@@ -13,10 +14,9 @@ router.post("/",authMiddleware,CourseController.CreateCourses);
 router.put("/:id", authMiddleware, CourseController.UpdateCourses);
 router.delete("/:id", authMiddleware, CourseController.deleteCourses);
 
+// ✅ Sirf admin ke liye
+router.get("/admin",CourseController.getAdminCourses);// Admin ko sab courses dikhaye
 
-// Admin ko sab courses dikhaye
-// ✅ Protected + Only Admin
-// router.get("/admin", authMiddleware, isAdmin, getAllCoursesAdmin);
 
 
 // ✅ User (auth required)

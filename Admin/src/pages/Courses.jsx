@@ -14,10 +14,12 @@ export default function Courses() {
     async function fetchCourses() {
       try {
         const res = await axios.get("http://localhost:5500/api/courses", {
-          headers: { Authorization: token }
+          headers: {
+            "Authorization": token,
+          },
         });
         setCourses(res.data);
-        // console.log(res.data);
+        console.log(res.data);
       } catch (err) {
         console.error("Failed to fetch courses:", err.message);
       }

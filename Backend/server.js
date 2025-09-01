@@ -16,18 +16,18 @@ import authMiddleware from "./Middleware/authMiddleware.js";
 import UserRoute from "./Routes/UserRoute.js";
 import CourseRoute from "./Routes/CourseRoute.js";
 import EnrollRoute from "./Routes/EnrollRoute.js";
-
 //Mongodb Connection
 ConnectDB();
 
-//Apis
 // Test route
 app.get("/", (req, res) => res.send("API is working"));
 
+//Apis
 // Mount routes
 app.use("/api/users", UserRoute);
 app.use("/api/courses", authMiddleware, CourseRoute);
 app.use("/api/enroll", EnrollRoute);
+
 
 //listening
 app.listen(process.env.PORT || 5000, () => {
