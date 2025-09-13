@@ -159,6 +159,7 @@ async loginAdmin(req, res) {
   //     res.status(500).json({ message: "internal server error", error });
   //   }
   // },
+
   // signup
 async createUser(req, res) {
   try {
@@ -204,8 +205,7 @@ async createUser(req, res) {
       }
       user.name = req.body.name || user.name;
       user.email = req.body.email || user.email;
-      user.password =
-        (await bcrypt.hash(req.body.password, 10)) || user.password;
+      user.password = (await bcrypt.hash(req.body.password, 10)) || user.password;
       user.profilePicture = req.body.profilePicture || user.profilePicture;
       user.age = req.body.age || user.age;
       user.role = req.body.role || user.role;

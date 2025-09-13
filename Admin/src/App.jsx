@@ -7,6 +7,8 @@ import Settings from './pages/Settings.jsx'
 import Login from './Components/Auth/Login.jsx'
 import Profile from './pages/profile.jsx'
 import Enroll from './pages/Enroll.jsx'
+import AddCourse from "./pages/AddCourses.jsx"
+
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 export default function App() {
@@ -53,6 +55,16 @@ export default function App() {
                             <div className="flex flex-1 overflow-hidden">
                                 <main className="flex-1 overflow-y-auto p-4">
                                     <Users />
+                                </main>
+                            </div>
+                        </div>
+                    } />
+                    <Route path="/add-course" element={
+                        <div className="flex flex-col h-full">
+                            <NavBar />
+                            <div className="flex flex-1 overflow-hidden">
+                                <main className="flex-1 overflow-y-auto p-4">
+                                    <AddCourse />
                                 </main>
                             </div>
                         </div>

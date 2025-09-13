@@ -102,14 +102,14 @@ export default function NavBar() {
                         {isLoggedIn ? (
                             <>
                                 <div className="relative">
-                                    <button className="p-2 rounded-full hover:bg-gray-200 text-gray-600">
+                                    {/* <button className="p-2 rounded-full hover:bg-gray-200 text-gray-600">
                                         <Bell size={20} />
                                         {notifications > 0 && (
                                             <span className="absolute top-0 right-0 bg-indigo-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                                                 {notifications}
                                             </span>
                                         )}
-                                    </button>
+                                    </button> */}
                                 </div>
 
                                 <div className="relative" ref={dropdownRef}>

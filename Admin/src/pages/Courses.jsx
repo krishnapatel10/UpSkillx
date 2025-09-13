@@ -31,10 +31,10 @@ export default function Courses() {
   return (
 
    
-    <div className="p-8">
+    <div className="p-8 bg-gray-100 ">
       <h2 className="text-3xl font-bold text-purple-700 mb-6">Courses</h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-3 gap-6">
         {courses.map((e) => (
           <div
             key={e._id}

@@ -18,7 +18,7 @@ export default function Enroll() {
   }, []);
 
   return (
-    <div>
+    <div className="bg-gray-100">
       {enroll.map((e, index) => (
         <div key={index} className="p-4 border-b">
           <h2 className="font-bold text-lg">

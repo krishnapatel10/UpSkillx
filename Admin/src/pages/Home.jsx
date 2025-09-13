@@ -111,7 +111,7 @@ export default function Home() {
   const [showAllCourses, setShowAllCourses] = useState(false);
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className="min-h-screen bg-gray-100 flex flex-col">
       {/* Main Section */}
       <main className="flex-1 container mx-auto px-6 py-10">
         {/* Header with Button */}
