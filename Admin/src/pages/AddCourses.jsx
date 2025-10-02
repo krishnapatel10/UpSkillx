@@ -46,6 +46,10 @@ export default function Courses() {
           Add New Course
         </h1>
 
+
+
+        
+
         {/* ✅ Alert Messages */}
         {success && (
           <Alert severity="success" className="mb-4">
