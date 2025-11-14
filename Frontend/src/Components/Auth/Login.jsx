@@ -15,6 +15,7 @@ const Login = () => {
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const API = import.meta.env.VITE_API_URL;   // ✅ IMPORTANT
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,7 +23,7 @@ const Login = () => {
     setSuccess('');
 
     try {
-      const Res = await axios.post('http://localhost:5500/api/users/login', {
+      const Res = await axios.post(`${API}/api/users/login`, {
         email,
         password,
       });

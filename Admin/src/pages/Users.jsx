@@ -3,11 +3,12 @@ import axios from "axios";
 
 export default function Users() {
   const [users, setUsers] = useState([]);
+    const API = import.meta.env.VITE_API_URL;   // ✅ IMPORTANT
 
   useEffect(() => {
     async function getdata() {
       try {
-        let res = await axios.get("http://localhost:5500/api/users/");
+        let res = await axios.get(`${API}/api/users/`);
         console.log(res.data);
         setUsers(res.data);
       } catch (error) {

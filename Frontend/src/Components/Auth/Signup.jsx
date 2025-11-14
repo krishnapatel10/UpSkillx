@@ -5,6 +5,7 @@ import axios from "axios"
 
 const SignUp = () => {
 
+    const API = import.meta.env.VITE_API_URL;   // ✅ IMPORTANT
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
@@ -54,9 +55,9 @@ const SignUp = () => {
       console.log("User registration data:",UserData);
 
 
-      let a = await axios.get("http://localhost:5500/api/users");
+      let a = await axios.get(`${API}/api/users`);
       console.log(a)
-      let res = await axios.post("http://localhost:5500/api/users/signup",UserData);
+      let res = await axios.post(`${API}/api/users/signup`,UserData);
       if (res.status == 201) {
         console.log(res.data)
         navigate("/login");

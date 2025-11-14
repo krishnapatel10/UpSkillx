@@ -5,7 +5,7 @@ async getAdminCourses (req, res)  {
   try {
     const courses = await Course.find();
     res.json(courses);
-  } catch (error) {
+  } catch (error) {   
     console.error("Error fetching admin courses:", error.message);
     res.status(500).json({ message: "Server error" });
   }

@@ -11,10 +11,12 @@ export default function EnrollCourse() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) return;
+      const API = import.meta.env.VITE_API_URL;   // ✅ ENV VARIABLE
 
     async function fetchCourse() {
       try {
-        const res = await axios.get(`http://localhost:5500/api/courses/${cid}`, {
+        const res = await axios.get(`${API}/api/courses/${cid}`, {
+
           headers: { Authorization: token },
         });
         setCourseData(res.data);

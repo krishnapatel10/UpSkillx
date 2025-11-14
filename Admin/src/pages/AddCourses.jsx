@@ -16,13 +16,14 @@ export default function Courses() {
       description: e.target[4].value,
     };
     let token = localStorage.getItem("token");
+      const API = import.meta.env.VITE_API_URL;   // ✅ ENV VARIABLE
 
     try {
-      let res = await axios.post("http://localhost:5500/api/courses", addCourse, {
-        headers: {
-          "Authorization": token,
-        },
-      });
+    let res = await axios.post(`${API}/api/courses`, addCourse, {
+  headers: {
+    "Authorization": token,
+  },
+});
 
       console.log("data send", res.data);
       setSuccess(true);  // ✅ success alert show hoga

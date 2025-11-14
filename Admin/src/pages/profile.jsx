@@ -6,10 +6,13 @@ import { User, Mail, Calendar, KeyRound, ImagePlus, Trash2, Edit3 } from 'lucide
 export default function Profile() {
   const navigate = useNavigate()
   
+  
   // User data state
   const [userData, setUserData] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+
+  const API = import.meta.env.VITE_API_URL;   // ✅ IMPORTANT
   
   // Form states
   const [isEditing, setIsEditing] = useState(false)
@@ -48,7 +51,7 @@ export default function Profile() {
         const tokenData = JSON.parse(atob(token.split('.')[1]))
         const userId = tokenData.id
         
-        const response = await axios.get(`http://localhost:5500/api/users/${userId}`, {
+        const response = await axios.get(`${API}/api/users/${userId}`, {
           headers: {
             'Authorization': token
           }
@@ -131,7 +134,7 @@ export default function Profile() {
       if (formData.newPassword) updateData.password = formData.newPassword
       
       const res = await axios.put(
-        `http://localhost:5500/api/users/${userData._id}`,
+        `${API}/api/users/${userData._id}`,
         updateData,
         { headers: { 'Authorization': token } }
       )
@@ -154,7 +157,7 @@ export default function Profile() {
     setDeleteLoading(true)
     try {
       const token = localStorage.getItem('token')
-      await axios.delete(`http://localhost:5500/api/users/${userData._id}`, {
+      await axios.delete(`${API}/api/users/${userData._id}`, {
         headers: { 'Authorization': token }
       })
       localStorage.removeItem('token')

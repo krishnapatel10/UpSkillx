@@ -29,6 +29,9 @@ app.use("/api/courses", authMiddleware, CourseRoute);
 app.use("/api/enroll", EnrollRoute);
 
 
+app.get("/",(req,res)=>{
+  res.json("API is working");
+})
 
 
 //listening

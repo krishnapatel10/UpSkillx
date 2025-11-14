@@ -3,11 +3,12 @@ import axios from "axios";
 
 export default function Enroll() {
   const [enroll, setEnroll] = useState([]);
+  const API = import.meta.env.VITE_API_URL;   // ✅ IMPORTANT
 
   useEffect(() => {
     async function GetEnroll() {
       try {
-        let res = await axios.get("http://localhost:5500/api/enroll/getAllEnroll");
+        let res = await axios.get(`${API}/api/enroll/getAllEnroll`);
         setEnroll(res.data);
         console.log("Enrollments:", res.data);
       } catch (err) {

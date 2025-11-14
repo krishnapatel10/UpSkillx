@@ -11,12 +11,14 @@ export default function Home() {
   const [courseCount, setCourseCount] = useState(0);
   let [usercount, setusercount] = useState(0)
 
+  const API = import.meta.env.VITE_API_URL;   // ✅ IMPORTANT
+
 
 
   useEffect(() => {
     async function GetEnroll() {
       try {
-        let res = await axios.get("http://localhost:5500/api/enroll/getAllEnroll");
+        let res = await axios.get(`${API}/api/enroll/getAllEnroll`);
           setEnroll(res.data);
         setEnrollCount(res.data.length);
       } catch (err) {
@@ -29,7 +31,7 @@ export default function Home() {
 
   useEffect(() => {
     async function getData() {
-      let res = await axios.get("http://localhost:5500/api/users")
+      let res = await axios.get(`${API}/api/users`)
       setUserData(res.data);
       // console.log(res.data);
       setusercount(res.data.length)
@@ -44,7 +46,7 @@ export default function Home() {
 
     async function fetchCourses() {
       try {
-        const res = await axios.get("http://localhost:5500/api/courses", {
+        const res = await axios.get(`${API}/api/courses`, {
           headers: { Authorization: token },
         });
         setCourses(res.data);

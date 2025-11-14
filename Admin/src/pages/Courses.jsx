@@ -6,6 +6,7 @@ import { Clock, CheckCircle, Star } from "lucide-react";
 export default function Courses() {
   let navigate = useNavigate();
   const [courses, setCourses] = useState([]);
+    const API = import.meta.env.VITE_API_URL;   // ✅ IMPORTANT
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -13,7 +14,7 @@ export default function Courses() {
 
     async function fetchCourses() {
       try {
-        const res = await axios.get("http://localhost:5500/api/courses", {
+        const res = await axios.get(`${API}/api/courses`, {
           headers: {
             "Authorization": token,
           },

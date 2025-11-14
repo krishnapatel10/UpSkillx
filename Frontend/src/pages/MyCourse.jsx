@@ -4,13 +4,14 @@ import { GraduationCap } from "lucide-react";
 
 const MyCourses = () => {
   const [courses, setCourses] = useState([]);
+  const API = import.meta.env.VITE_API_URL;   // ✅ IMPORTANT
 
   useEffect(() => {
     const fetchMyCourses = async () => {
       try {
         const token = localStorage.getItem("token");
         const user = JSON.parse(localStorage.getItem("user")); // Ensure user ID is stored
-        const res = await axios.get(`http://localhost:5500/api/enroll/getEnrolls/${user._id}`, {
+        const res = await axios.get(`${API}/api/enroll/getEnrolls/${user._id}`, {
           headers: {
             'Authorization': token
           }
