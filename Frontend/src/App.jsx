@@ -8,7 +8,7 @@ import SideBar from "./Components/SideBar.jsx"
 import Home from './pages/Home.jsx'
 import Courses from "./pages/Courses.jsx"
 import EnrollCourse from "./pages/EnrollCourse.jsx"
-import About from "./Pages/About.jsx"
+// import About from "./Pages/About.jsx"
 import Contact from './pages/Contact.jsx'
 import MyCourse from './pages/MyCourse.jsx'
 
@@ -45,7 +45,7 @@ export default function App() {
                             </div>
                         </div>
                     } />
-
+{/* 
                     <Route path="/about" element={
                         <div className="flex flex-col h-full">
                             <NavBar />
@@ -56,7 +56,7 @@ export default function App() {
                                 </main>
                             </div>
                         </div>
-                    } /> 
+                    } /> */}
 
                     <Route path="/courses" element={
                         <div className="flex flex-col h-full">
