@@ -25,7 +25,7 @@ let app = express();
 // }));
 
 app.use(cors({
-  origin: ["https://up-skillx-wdd1.vercel.app", "http://localhost:3000"],
+  origin: ["https://up-skillx-wdd1.vercel.app", "http://localhost:5173"],
   credentials: true
 }));
 
