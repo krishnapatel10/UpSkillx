@@ -5,23 +5,28 @@ import "dotenv/config";
 
 let app = express();
 
-// ✅ CORS Setup
-const allowedOrigins = [
-  "http://localhost:5173",                       // local dev
-  "https://upskillx-frontend.vercel.app",       // replace with tumhara actual Vercel URL
-];
+// // ✅ CORS Setup
+// const allowedOrigins = [
+//   "http://localhost:5173",                       // local dev
+//   "https://up-skillx-wdd1.vercel.app/",       // replace with tumhara actual Vercel URL
+// ];
+
+// app.use(cors({
+//   origin: function(origin, callback){
+//     // allow requests with no origin (like Postman)
+//     if(!origin) return callback(null, true);
+//     if(allowedOrigins.indexOf(origin) === -1){
+//       const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+//       return callback(new Error(msg), false);
+//     }
+//     return callback(null, true);
+//   },
+//   credentials: true // agar cookies/token bhejna ho
+// }));
 
 app.use(cors({
-  origin: function(origin, callback){
-    // allow requests with no origin (like Postman)
-    if(!origin) return callback(null, true);
-    if(allowedOrigins.indexOf(origin) === -1){
-      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-      return callback(new Error(msg), false);
-    }
-    return callback(null, true);
-  },
-  credentials: true // agar cookies/token bhejna ho
+  origin: ["https://up-skillx-wdd1.vercel.app", "http://localhost:3000"],
+  credentials: true
 }));
 
 app.use(bodyParser.json());
