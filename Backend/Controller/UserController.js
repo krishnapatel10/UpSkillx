@@ -166,7 +166,7 @@ async createUser(req, res) {
     const ADMIN_EMAIL = "admin@example.com"; // apna admin email yaha dalna
 
     // default role = user
-    let role = "user";
+    let role = "User";
 
     // agar email admin ke equal hai to role = admin force kar do
     if (req.body.email.trim().toLowerCase() === ADMIN_EMAIL) {
