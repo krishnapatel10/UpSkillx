@@ -4,7 +4,26 @@ import bodyParser from "body-parser";
 import "dotenv/config";
 
 let app = express();
-app.use(cors());
+
+// ✅ CORS Setup
+const allowedOrigins = [
+  "http://localhost:5173",                       // local dev
+  "https://upskillx-frontend.vercel.app",       // replace with tumhara actual Vercel URL
+];
+
+app.use(cors({
+  origin: function(origin, callback){
+    // allow requests with no origin (like Postman)
+    if(!origin) return callback(null, true);
+    if(allowedOrigins.indexOf(origin) === -1){
+      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  },
+  credentials: true // agar cookies/token bhejna ho
+}));
+
 app.use(bodyParser.json());
 
 
