@@ -7,8 +7,8 @@ let app = express();
 
 // Allowed origins
 const allowedOrigins = [
-  "https://up-skillx-wdd1.vercel.app", // Vercel frontend
-  "http://localhost:5173"               // Local Vite dev server
+  "https://up-skillx.vercel.app/", // Vercel frontend
+  "http://localhost:5173"              // Local Vite dev server
 ];
 
 app.use(cors({
