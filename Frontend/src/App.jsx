@@ -17,7 +17,7 @@ import Login from "./Components/Auth/Login.jsx"
 import Signup from "./Components/Auth/Signup.jsx"
 import Settings from './Components/Settings.jsx'
 import NotFound from "./pages/NotFound.jsx"
-import DoubtPage from './pages/doubt.jsx'
+// import DoubtPage from './pages/doubt.jsx'
 
 
 export default function App() {
@@ -69,7 +69,7 @@ export default function App() {
                         </div>
                     } />
 
-                    <Route path="/doubt" element={
+                    {/* <Route path="/doubt" element={
                         <div className="flex flex-col h-full">
                             <NavBar />
                             <div className="flex flex-1 overflow-hidden">
@@ -79,7 +79,7 @@ export default function App() {
                                 </main>
                             </div>
                         </div>
-                    } />
+                    } /> */}
                     <Route path="/Contact" element={
                         <div className="flex flex-col h-full">
                             <NavBar />
